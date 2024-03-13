@@ -27,7 +27,8 @@ const initialState = {
   llamaEndpoint: "http://localhost:8080",
   chatbotName: "Mistral",
   userName: "User",
-  systemPrompt: "10 preguntas que le harías a una IA\n1:",
+  systemPrompt:
+    'Inventa un Mito basado en la {{mitology}} sobre {{object}}, el protagonista {{protagonist}}, habla de todas sus características en el mito.\nMito:\n"',
   promptTemplate: "{{prompt}}",
   chatHistoryTemplate: "",
   stop: ["</s>", "<|im_start|>", "<|im_end|>"],

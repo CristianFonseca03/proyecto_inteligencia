@@ -46,6 +46,9 @@ export default function useCompletion() {
   const [params, setParams] = useState<Params>(DEFAULT_PARAMS);
 
   async function complete(
+    value: string,
+    value2: string,
+    mitology: string,
     llamaEndpoint: string,
     systemPrompt: string,
     chatbotName: string,
@@ -62,9 +65,12 @@ export default function useCompletion() {
       stop,
       prompt: promptTemplate
         .replace("{{prompt}}", systemPrompt)
-        .replace("{{history}}", history)
-        .replace("{{char}}", chatbotName),
+        .replace("{{mitology}}", mitology)
+        .replace("{{object}}", value)
+        .replace("{{protagonist}}", value2),
     };
+
+    console.log(body);
 
     const response = await fetch(`${llamaEndpoint}/completion`, {
       method: "POST",

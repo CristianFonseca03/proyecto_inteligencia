@@ -14,6 +14,7 @@ export type MessageData = { content: string; author: string };
 const Assistant = () => {
   const [value, setValue] = useState<string>("");
   const [value2, setValue2] = useState<string>("");
+  const [mythology, setMythology] = useState("Mitología Griega");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [abortController, setAbortController] =
     useState<AbortController | null>(null);
@@ -37,7 +38,11 @@ const Assistant = () => {
   } = useContext(SettingsContext);
   const { complete } = useCompletion();
 
-  const handleSubmit = async (value: string) => {
+  const handleSubmit = async (
+    value: string,
+    value2: string,
+    mitology: string,
+  ) => {
     const newMessages: MessageData[] = [
       ...messages,
       {
@@ -61,6 +66,9 @@ const Assistant = () => {
     setAbortController(controller);
 
     await complete(
+      value,
+      value2,
+      mitology,
       llamaEndpoint,
       systemPrompt,
       chatbotName,
@@ -149,21 +157,6 @@ const Assistant = () => {
               Parar
             </button>
           )}
-
-          {!isLoading && messages.length > 1 && (
-            <button
-              onClick={async () => {
-                messages.pop();
-                setMessages(messages);
-                const lastMessage = messages.pop();
-                if (lastMessage) {
-                  await handleSubmit(lastMessage.content);
-                }
-              }}
-            >
-              Regenerar
-            </button>
-          )}
         </div>
 
         <form
@@ -172,16 +165,21 @@ const Assistant = () => {
             event.preventDefault();
 
             if (!isLoading) {
-              await handleSubmit(value);
+              await handleSubmit(value, value2, mythology);
             }
           }}
         >
-          <select name="mythology" id="mythology">
-            <option value="greek">Mitología Griega</option>
-            <option value="nordic">Mitología Nórdica</option>
-            <option value="egyptian">Mitología Egipcia</option>
-            <option value="muizca">Mitología Muizca</option>
-            <option value="maya">Mitología Maya</option>
+          <select
+            name="mythology"
+            id="mythology"
+            value={mythology}
+            onChange={(e) => setMythology(e.target.value)}
+          >
+            <option value="Mitología Griega">Mitología Griega</option>
+            <option value="Mitología Nórdica">Mitología Nórdica</option>
+            <option value="Mitología Egipcia">Mitología Egipcia</option>
+            <option value="Mitología Muizca">Mitología Muizca</option>
+            <option value="Mitología Maya">Mitología Maya</option>
           </select>
           <TextArea
             className="w-100"
