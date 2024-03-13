@@ -1,0 +1,18 @@
+<html>
+  <body>
+    <pre>
+      <script type="module">
+        import { llama } from '/completion.js'
+
+        const prompt = `### Instruction:
+10 curiosidades sobre JavaScript
+
+### Response:`
+
+        for await (const chunk of llama(prompt)) {
+          document.write(chunk.data.content)
+        }
+      </script>
+    </pre>
+  </body>
+</html>
